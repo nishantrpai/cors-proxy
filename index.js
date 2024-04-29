@@ -4,7 +4,7 @@ var express = require('express'),
     app = express();
 
 var myLimit = typeof(process.argv[2]) != 'undefined' ? process.argv[2] : '100kb';
-console.log('Using limit: ', myLimit);
+// console.log('Using limit: ', myLimit);
 
 app.use(bodyParser.json({limit: myLimit}));
 
@@ -19,13 +19,13 @@ app.all('*', function (req, res, next) {
         res.send();
     } else {
         let targetURL = req.query.url;
-        console.log('proxying request to: ', targetURL);
+        // console.log('proxying request to: ', targetURL);
         // make request to target URL and send the response
         request({url: targetURL, method: req.method, json: req.body}, function (error, response, body) {
             if (error) {
                 console.error('error: ', error);
             }
-            console.log('proxy response: ', response && response.statusCode);
+            // console.log('proxy response: ', response && response.statusCode);
         }).pipe(res);
     }
 });
@@ -33,5 +33,5 @@ app.all('*', function (req, res, next) {
 app.set('port', process.env.PORT || 3000);
 
 app.listen(app.get('port'), function () {
-    console.log('Proxy server listening on port ' + app.get('port'));
+    // console.log('Proxy server listening on port ' + app.get('port'));
 });
